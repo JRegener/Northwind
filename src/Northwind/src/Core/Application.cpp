@@ -45,11 +45,13 @@ namespace Northwind {
 	void Application::pushLayer (Layer * layer)
 	{
 		m_layerStack.pushLayer (layer);
+		layer->OnAttach();
 	}
 
 	void Application::pushOverlay (Layer * overlay)
 	{
 		m_layerStack.pushOverlay (overlay);
+		overlay->OnAttach();
 	}
 
 	bool Application::OnWindowClose ()

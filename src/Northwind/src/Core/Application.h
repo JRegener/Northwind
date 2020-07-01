@@ -7,7 +7,7 @@
 namespace Northwind {
 	class Application {
 	public:
-		Application();
+		explicit Application();
 		virtual ~Application();
 
 		void Run();

@@ -86,6 +86,8 @@ spdlog_enable_warnings(Northwind)
 target_link_libraries(Northwind spdlog::spdlog)
 
 # link imgui
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Vendor/imgui)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Vendor/imgui/examlpe)
 target_link_libraries(Northwind imgui)
 
 # link glm

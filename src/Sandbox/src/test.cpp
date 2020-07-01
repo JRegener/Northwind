@@ -25,6 +25,13 @@ public:
 	}
 };
 
+class ImGuiLayer : public Northwind::Layer {
+
+public:
+
+	explicit ImGuiLayer();
+};
+
 class SandBox : public Northwind::Application {
 public:
 	SandBox()
