@@ -25,7 +25,7 @@ namespace Northwind {
 
 	class Event {
 	public:
-		bool Handled = false;
+		bool handled = false;
 
 		virtual EventType getEventType() const = 0;
 		virtual int getCategoryFlags() const = 0;
@@ -38,33 +38,27 @@ namespace Northwind {
 
 	};
 
-#define EVENT_CLASS_TYPE(type) static EventType getStaticType() { return EventType::type; } \
-                                   virtual EventType getEventType() const override { return getStaticType(); } \
-								   virtual const char * getName() const override { return #type; }
-
-#define EVENT_CLASS_CATEGORY(category) virtual int getCategoryFlags() const override { return category; }
-
 	class EventDispatcher
 	{
 	public:
 		EventDispatcher(Event& event)
-			: m_Event(event)
+			: m_event(event)
 		{
 		}
 
 		// F will be deduced by the compiler
 		template<typename T, typename F>
-		bool Dispatch(const F& func)
+		bool dispatch(const F& func)
 		{
-			if (m_Event.GetEventType() == T::GetStaticType())
+			if (m_event.getEventType() == T::getStaticType())
 			{
-				m_Event.Handled = func(static_cast<T&>(m_Event));
+				m_event.handled = func(static_cast<T&>(m_event));
 				return true;
 			}
 			return false;
 		}
 	private:
-		Event& m_Event;
+		Event& m_event;
 	};
 
 	inline std::ostream& operator<<(std::ostream& os, const Event& e)

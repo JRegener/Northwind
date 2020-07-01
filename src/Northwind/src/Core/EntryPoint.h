@@ -2,7 +2,7 @@
 
 #include "Northwind.h"
 
-extern Northwind::Application * Northwind::CreateApplication();
+extern std::unique_ptr<Northwind::Application> Northwind::CreateApplication();
 
 int main(int argc, char ** argv) {
 	Northwind::Log::Init();
@@ -13,6 +13,4 @@ int main(int argc, char ** argv) {
 	auto app = Northwind::CreateApplication();
 
 	app->Run();
-
-	delete app;
 }
