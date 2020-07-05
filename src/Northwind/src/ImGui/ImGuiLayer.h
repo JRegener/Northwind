@@ -15,7 +15,8 @@ namespace Northwind {
 		virtual void OnUpdate();
 		virtual void OnEvent();
 
-
+		void Begin();
+		void End();
 	};
 
 }

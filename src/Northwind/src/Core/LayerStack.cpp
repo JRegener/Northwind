@@ -14,7 +14,6 @@ namespace Northwind {
 		for (auto layer : m_layers)
 		{
 			layer->OnDetach ();
-			delete layer;
 		}
 	}
 

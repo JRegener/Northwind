@@ -24,6 +24,8 @@ namespace Northwind {
 		void setVSync (bool enabled) override;
 		bool isVSync () override;
 
+		void* getNativeWindow() { return m_window; }
+
 	private:
 		virtual void init (const WindowProps & props);
 		virtual void shutdown ();
