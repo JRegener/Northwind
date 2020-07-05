@@ -27,8 +27,8 @@ namespace Northwind {
 		bool OnWindowClose ();
 	
 	private:
-		std::shared_ptr<ImGuiLayer> m_imGuiLayer;
-		std::unique_ptr<Window> m_window;
+		Owned<ImGuiLayer> m_imGuiLayer;
+		Owned<Window> m_window;
 		bool m_running;
 
 		LayerStack m_layerStack;
@@ -37,5 +37,5 @@ namespace Northwind {
 	};
 
 	//to be defined in CLIENT
-	std::unique_ptr<Application> CreateApplication();
+	Owned<Application> CreateApplication();
 }

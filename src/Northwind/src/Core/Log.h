@@ -6,6 +6,8 @@
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 
+// TODO: Replace shared_ptr on custom alias
+
 namespace Northwind {
 
 	class Log {

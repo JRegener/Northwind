@@ -35,6 +35,6 @@ namespace Northwind {
 
 		virtual void* getNativeWindow() = 0;
 
-		static std::unique_ptr<Window> Create (const WindowProps & props = WindowProps ());
+		static Owned<Window> Create (const WindowProps & props = WindowProps ());
 	};
 }

@@ -29,3 +29,20 @@
 #define NW_CORE_ASSERT(x, ...)
 
 #endif
+
+namespace Northwind {
+
+	template<typename T>
+	using Owned = std::unique_ptr<T>;
+	template<typename T, typename ... Args>
+	constexpr Owned<T> CreateOwned(Args&& ... args) {
+		return std::make_unique<T>(std::forward<Args>(args...));
+	}
+
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+	template<typename T, typename ... Args>
+	constexpr Ref<T> CreateRef(Args&& ... args) {
+		return std::make_shared<T>(std::forward<Args>(args...));
+	}
+}

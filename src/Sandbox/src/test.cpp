@@ -68,7 +68,7 @@ public:
 
 class SandBox : public Northwind::Application {
 public:
-	SandBox() : m_exampleLayer(std::make_unique<ExampleLayer>())
+	SandBox() : m_exampleLayer(Northwind::CreateOwned<ExampleLayer>())
 	{
 		pushLayer (m_exampleLayer.get());
 	}
@@ -78,10 +78,10 @@ public:
 	}
 
 private:
-	std::unique_ptr<ExampleLayer> m_exampleLayer;
+	Northwind::Owned<ExampleLayer> m_exampleLayer;
 };
 
-std::unique_ptr<Northwind::Application> Northwind::CreateApplication() {
-	return std::make_unique<SandBox>();
+Northwind::Owned<Northwind::Application> Northwind::CreateApplication() {
+	return Northwind::CreateOwned<SandBox>();
 }
 

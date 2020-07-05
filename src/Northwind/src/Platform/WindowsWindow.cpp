@@ -6,8 +6,8 @@
 
 namespace Northwind {
 
-	std::unique_ptr<Window> Window::Create (const WindowProps & props) {
-		return std::make_unique<WindowsWindow> (props);
+	Owned<Window> Window::Create (const WindowProps & props) {
+		return CreateOwned<WindowsWindow> (props);
 	}
 
 	WindowsWindow::WindowsWindow (const WindowProps & props) {
