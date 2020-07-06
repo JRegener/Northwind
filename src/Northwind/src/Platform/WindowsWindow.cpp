@@ -15,15 +15,21 @@ namespace Northwind {
 	}
 
 	WindowsWindow::~WindowsWindow () {
+		NW_PROFILE_FUNC();
+
 		shutdown ();
 	}
 
 	void WindowsWindow::OnUpdate () {
+		NW_PROFILE_FUNC();
+
 		glfwPollEvents ();
 		glfwSwapBuffers (m_window);
 	}
 
 	void WindowsWindow::setVSync (bool enabled) {
+		NW_PROFILE_FUNC();
+
 		if (enabled) {
 			glfwSwapInterval (1);
 		}
@@ -39,6 +45,8 @@ namespace Northwind {
 	}
 
 	void WindowsWindow::init (const WindowProps & props) {
+		NW_PROFILE_FUNC();
+
 		static bool GLFWInitialized = false;
 
 		if (!GLFWInitialized) {
@@ -147,6 +155,8 @@ namespace Northwind {
 	}
 
 	void WindowsWindow::shutdown () {
+		NW_PROFILE_FUNC();
+
 		glfwDestroyWindow (m_window);
 	}
 }

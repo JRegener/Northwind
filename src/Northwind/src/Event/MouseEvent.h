@@ -15,6 +15,8 @@ namespace Northwind {
 
 		std::string toString () const override
 		{
+			NW_PROFILE_FUNC();
+
 			std::stringstream ss;
 			ss << "MouseMovedEvent: " << m_MouseX << ", " << m_MouseY;
 			return ss.str ();
@@ -40,6 +42,8 @@ namespace Northwind {
 
 		std::string toString () const override
 		{
+			NW_PROFILE_FUNC();
+
 			std::stringstream ss;
 			ss << "MouseScrolledEvent: " << getXOffset () << ", " << getYOffset ();
 			return ss.str ();
@@ -78,6 +82,8 @@ namespace Northwind {
 
 		std::string toString () const override
 		{
+			NW_PROFILE_FUNC();
+
 			std::stringstream ss;
 			ss << "MouseButtonPressedEvent: " << m_Button;
 			return ss.str ();
@@ -96,6 +102,8 @@ namespace Northwind {
 
 		std::string toString () const override
 		{
+			NW_PROFILE_FUNC();
+
 			std::stringstream ss;
 			ss << "MouseButtonReleasedEvent: " << m_Button;
 			return ss.str ();

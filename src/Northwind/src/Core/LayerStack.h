@@ -9,12 +9,12 @@ namespace Northwind {
 
 	class LayerStack {
 	public:
-		LayerStack ();
+		explicit LayerStack ();
 		~LayerStack ();
 
-		void pushLayer (Layer* layer);
+		void pushLayer (const Ref<Layer>& layer);
 		void popLayer (Layer* layer);
-		void pushOverlay (Layer* overlay);
+		void pushOverlay (const Ref<Layer>& overlay);
 		void popOverlay (Layer* overlay);
 
 
@@ -32,6 +32,7 @@ namespace Northwind {
 
 	private:
 		std::vector<Layer*> m_layers;
+		std::vector<Ref<Layer>> m_layersStorage;
 		ptrdiff_t m_layerInsertIndex = 0;
 	};
 

@@ -13,6 +13,8 @@ namespace Northwind {
 
 	void ImGuiLayer::OnAttach()
 	{
+		NW_PROFILE_FUNC();
+
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -46,6 +48,8 @@ namespace Northwind {
 
 	void ImGuiLayer::OnDetach()
 	{
+		NW_PROFILE_FUNC();
+
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
@@ -61,6 +65,8 @@ namespace Northwind {
 
 	void ImGuiLayer::Begin()
 	{
+		NW_PROFILE_FUNC();
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -68,6 +74,8 @@ namespace Northwind {
 
 	void ImGuiLayer::End()
 	{
+		NW_PROFILE_FUNC();
+
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::getInstance();
 		io.DisplaySize = ImVec2((float)app.getWindow().getWidth(), (float)app.getWindow().getHeight());

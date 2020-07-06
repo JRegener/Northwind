@@ -30,6 +30,8 @@ namespace Northwind {
 		inline int getRepeatCount () { return m_RepeatCount; }
 
 		std::string toString () const override {
+			NW_PROFILE_FUNC();
+
 			std::stringstream ss;
 			ss << "KeyPressedEvent: " << m_KeyCode << " (" << m_RepeatCount << ")";
 			return ss.str ();
@@ -51,6 +53,8 @@ namespace Northwind {
 			KeyEvent (keyCode) {}
 
 		std::string toString () const override {
+			NW_PROFILE_FUNC();
+
 			std::stringstream ss;
 			ss << "KeyReleasedEvent: " << m_KeyCode;
 			return ss.str ();
@@ -68,6 +72,8 @@ namespace Northwind {
 			KeyEvent (keyCode) {}
 
 		std::string toString () const override {
+			NW_PROFILE_FUNC();
+
 			std::stringstream ss;
 			ss << "KeyTypedEvent: " << m_KeyCode;
 			return ss.str ();

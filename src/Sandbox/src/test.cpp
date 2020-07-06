@@ -28,14 +28,20 @@ public:
 	virtual void OnDetach() override {}
 
 	virtual void OnUpdate() override {
+		NW_PROFILE_FUNC();
+
 		NW_CLIENT_TRACE ("{0}", m_name);
 	}
 
 	virtual void OnEvent (Northwind::Event & event) override  {
+		NW_PROFILE_FUNC();
+
 		NW_CLIENT_TRACE ("{0}", event);
 	}
 
 	virtual void OnImGuiRender() override {
+		NW_PROFILE_FUNC();
+
 		// Create a window called "My First Tool", with a menu bar.
 		bool my_tool_active = false;
 		ImGui::Begin("My First Tool", &my_tool_active, ImGuiWindowFlags_MenuBar);
@@ -70,15 +76,16 @@ class SandBox : public Northwind::Application {
 public:
 	SandBox() : m_exampleLayer(Northwind::CreateOwned<ExampleLayer>())
 	{
-		pushLayer (m_exampleLayer.get());
+		NW_PROFILE_FUNC();
+
+		pushLayer (m_exampleLayer);
 	}
 
 	~SandBox()
-	{
-	}
+	{}
 
 private:
-	Northwind::Owned<ExampleLayer> m_exampleLayer;
+	Northwind::Ref<ExampleLayer> m_exampleLayer;
 };
 
 Northwind::Owned<Northwind::Application> Northwind::CreateApplication() {
