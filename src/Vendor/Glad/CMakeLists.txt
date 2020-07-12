@@ -1,4 +1,4 @@
-project (Glad)
+project (glad)
 
 file (GLOB_RECURSE SOURCE_FILES "*.cpp" "*c")
 file (GLOB_RECURSE HEADER_FILES "*.h")

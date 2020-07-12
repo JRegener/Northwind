@@ -15,18 +15,21 @@ or view this file with any Markdown viewer.
 | [What is this library called?](#q-what-is-this-library-called) |
 | [Which version should I get?](#q-which-version-should-i-get) |
 | **Q&A: Integration** |
+| **[How to get started?](#q-how-to-get-started)** |
 | **[How can I tell whether to dispatch mouse/keyboard to Dear ImGui or to my application?](#q-how-can-i-tell-whether-to-dispatch-mousekeyboard-to-dear-imgui-or-to-my-application)** |
 | [How can I enable keyboard or gamepad controls?](#q-how-can-i-enable-keyboard-or-gamepad-controls) |
 | [How can I use this on a machine without mouse, keyboard or screen? (input share, remote display)](#q-how-can-i-use-this-on-a-machine-without-mouse-keyboard-or-screen-input-share-remote-display) |
-| [I integrated Dear ImGui in my engine and the text or lines are blurry..](#q-i-integrated-dear-imgui-in-my-engine-and-the-text-or-lines-are-blurry) |
+| [I integrated Dear ImGui in my engine and little squares are showing instead of text..](#q-i-integrated-dear-imgui-in-my-engine-and-little-squares-are-showing-instead-of-text) |
 | [I integrated Dear ImGui in my engine and some elements are clipping or disappearing when I move windows around..](#q-i-integrated-dear-imgui-in-my-engine-and-some-elements-are-clipping-or-disappearing-when-i-move-windows-around) |
+| [I integrated Dear ImGui in my engine and some elements are displaying outside their expected windows boundaries..](#q-i-integrated-dear-imgui-in-my-engine-and-some-elements-are-displaying-outside-their-expected-windows-boundaries) |
 | **Q&A: Usage** |
-| **[Why are multiple widgets reacting when I interact with a single one?<br>How can I have multiple widgets with the same label or with an empty label?](#q-why-are-multiple-widgets-reacting-when-i-interact-with-a-single-one-q-how-can-i-have-multiple-widgets-with-the-same-label-or-with-an-empty-label)** |
+| **[How can I have widgets with an empty label?<br>How can I have multiple widgets with the same label?<br>Why are multiple widgets reacting when I interact with one?](#q-how-can-i-have-widgets-with-an-empty-label)** |
 | [How can I display an image? What is ImTextureID, how does it work?](#q-how-can-i-display-an-image-what-is-imtextureid-how-does-it-work)|
 | [How can I use my own math types instead of ImVec2/ImVec4?](#q-how-can-i-use-my-own-math-types-instead-of-imvec2imvec4) |
 | [How can I interact with standard C++ types (such as std::string and std::vector)?](#q-how-can-i-interact-with-standard-c-types-such-as-stdstring-and-stdvector) |
 | [How can I display custom shapes? (using low-level ImDrawList API)](#q-how-can-i-display-custom-shapes-using-low-level-imdrawlist-api) |
 | **Q&A: Fonts, Text** |
+| [How should I handle DPI in my application?](#q-how-should-i-handle-dpi-in-my-application) |
 | [How can I load a different font than the default?](#q-how-can-i-load-a-different-font-than-the-default) |
 | [How can I easily use icons in my application?](#q-how-can-i-easily-use-icons-in-my-application) |
 | [How can I load multiple fonts?](#q-how-can-i-load-multiple-fonts) |
@@ -54,6 +57,8 @@ or view this file with any Markdown viewer.
 - Your programming IDE is your friend, find the type or function declaration to find comments associated to it.
 - The `ImGui::ShowMetricsWindow()` function exposes lots of internal information and tools. Although it is primary designed as a debugging tool, having access to that information tends to help understands concepts.
 
+##### [Return to Index](#index)
+
 ---
 
 ### Q. What is this library called?
@@ -61,6 +66,8 @@ or view this file with any Markdown viewer.
 **This library is called Dear ImGui**. Please refer to it as Dear ImGui (not ImGui, not IMGUI).
 
 (The library misleadingly started its life in 2014 as "ImGui" due to the fact that I didn't give it a proper name when when I released 1.0, and had no particular expectation that it would take off. However, the term IMGUI (immediate-mode graphical user interface) was coined before and is being used in variety of other situations e.g. Unity uses it own implementation of the IMGUI paradigm. To reduce the ambiguity without affecting existing code bases, I have decided in December 2015 a fully qualified name "Dear ImGui" for this library.
+
+##### [Return to Index](#index)
 
 ---
 
@@ -73,12 +80,23 @@ You may use the [docking](https://github.com/ocornut/imgui/tree/docking) branch 
 
 Many projects are using this branch and it is kept in sync with master regularly.
 
----
+You may merge in the [tables](https://github.com/ocornut/imgui/tree/tables) branch which includes:
+- [Table features](https://github.com/ocornut/imgui/issues/2957)
 
 ##### [Return to Index](#index)
 
+----
 
 # Q&A: Integration
+
+### Q: How to get started?
+
+Read `PROGRAMMER GUIDE` section of [imgui.cpp](https://github.com/ocornut/imgui/blob/master/imgui.cpp).
+Read [examples/README.txt](https://github.com/ocornut/imgui/tree/master/examples/README.txt).
+
+##### [Return to Index](#index)
+
+---
 
 ### Q: How can I tell whether to dispatch mouse/keyboard to Dear ImGui or to my application?
 
@@ -93,9 +111,15 @@ e.g. `if (ImGui::GetIO().WantCaptureMouse) { ... }`
 **Note:** You should always pass your mouse/keyboard inputs to Dear ImGui, even when the io.WantCaptureXXX flag are set false.
  This is because imgui needs to detect that you clicked in the void to unfocus its own windows.
 
-**Note:** The `io.WantCaptureMouse` is more accurate that any manual attempt to "check if the mouse is hovering a window" (don't do that!). It handle mouse dragging correctly (both dragging that started over your application or over an imgui window) and handle e.g. modal windows blocking inputs. Those flags are updated by `ImGui::NewFrame()`. Preferably read the flags after calling NewFrame() if you can afford it, but reading them before is also perfectly fine, as the bool toggle fairly rarely. If you have on a touch device, you might find use for an early call to `UpdateHoveredWindowAndCaptureFlags()`.
+**Note:** The `io.WantCaptureMouse` is more correct that any manual attempt to "check if the mouse is hovering a window" (don't do that!). It handle mouse dragging correctly (both dragging that started over your application or over a Dear ImGui window) and handle e.g. popup and modal windows blocking inputs. 
 
-**Note:** Text input widget releases focus on "Return KeyDown", so the subsequent "Return KeyUp" event that your application receive will typically have `io.WantCaptureKeyboard == false`. Depending on your application logic it may or not be inconvenient. You might want to track which key-downs were targeted for Dear ImGui, e.g. with an array of bool, and filter out the corresponding key-ups.)
+**Note:** Those flags are updated by `ImGui::NewFrame()`. However it is generally more correct and easier that you poll flags from the previous frame, then submit your inputs, then call `NewFrame()`. If you attempt to do the opposite (which is generally harder) you are likely going to submit your inputs after `NewFrame()`, and therefore too late. 
+
+**Note:** If you are using a touch device, you may find use for an early call to `UpdateHoveredWindowAndCaptureFlags()` to correctly dispatch your initial touch. We will work on better out-of-the-box touch support in the future. 
+
+**Note:** Text input widget releases focus on the "KeyDown" event of the Return key, so the subsequent "KeyUp" event that your application receive will typically have `io.WantCaptureKeyboard == false`. Depending on your application logic it may or not be inconvenient to receive that KeyUp event. You might want to track which key-downs were targeted for Dear ImGui, e.g. with an array of bool, and filter out the corresponding key-ups.)
+
+##### [Return to Index](#index)
 
 ---
 
@@ -105,6 +129,8 @@ e.g. `if (ImGui::GetIO().WantCaptureMouse) { ... }`
 - Gamepad: set `io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad` to enable (with a supporting back-end).
 - See [Control Sheets for Gamepads](http://www.dearimgui.org/controls_sheets) (reference PNG/PSD for for PS4, XB1, Switch gamepads).
 - See `USING GAMEPAD/KEYBOARD NAVIGATION CONTROLS` section of [imgui.cpp](https://github.com/ocornut/imgui/blob/master/imgui.cpp) for more details.
+
+##### [Return to Index](#index)
 
 ---
 
@@ -117,31 +143,39 @@ to your host computer, based on the Synergy 1.x protocol. Make sure you download
 Console SDK also sometimes provide equivalent tooling or wrapper for Synergy-like protocols.
 - Game console users: consider emulating a mouse cursor with DualShock4 touch pad or a spare analog stick as a mouse-emulation fallback.
 - You may also use a third party solution such as [Remote ImGui](https://github.com/JordiRos/remoteimgui) or [imgui-ws](https://github.com/ggerganov/imgui-ws) which sends the vertices to render over the local network, allowing you to use Dear ImGui even on a screen-less machine. See [Wiki](https://github.com/ocornut/imgui/wiki) index for most details.
-- For touch inputs, you can increase the hit box of widgets (via the `style.TouchPadding` setting) to accommodate
-for the lack of precision of touch inputs, but it is recommended you use a mouse or gamepad to allow optimizing
-for screen real-estate and precision.
+- For touch inputs, you can increase the hit box of widgets (via the `style.TouchPadding` setting) to accommodate for the lack of precision of touch inputs, but it is recommended you use a mouse or gamepad to allow optimizing for screen real-estate and precision.
+
+##### [Return to Index](#index)
 
 ---
 
-### Q: I integrated Dear ImGui in my engine and the text or lines are blurry..
-In your Render function, try translating your projection matrix by (0.5f,0.5f) or (0.375f,0.375f).
-Also make sure your orthographic projection matrix and io.DisplaySize matches your actual framebuffer dimension.
+### Q: I integrated Dear ImGui in my engine and little squares are showing instead of text..
+This usually means that: your font texture wasn't uploaded into GPU, or your shader or other rendering state are not reading from the right texture (e.g. texture wasn't bound).
+If this happens using the standard back-ends it is probably that the texture failed to upload, which could happens if for some reason your texture is too big. Also see [docs/FONTS.md](https://github.com/ocornut/imgui/blob/master/docs/FONTS.md).
+
+##### [Return to Index](#index)
 
 ---
 
 ### Q: I integrated Dear ImGui in my engine and some elements are clipping or disappearing when I move windows around..
+### Q: I integrated Dear ImGui in my engine and some elements are displaying outside their expected windows boundaries..
 You are probably mishandling the clipping rectangles in your render function.
-Rectangles provided by ImGui are defined as
+Each draw command needs the triangle rendered using the clipping rectangle provided in the ImDrawCmd structure (`ImDrawCmd->CllipRect`).
+Rectangles provided by Dear ImGui are defined as
 `(x1=left,y1=top,x2=right,y2=bottom)`
 and **NOT** as
 `(x1,y1,width,height)`
+Refer to rendering back-ends in the [examples/](https://github.com/ocornut/imgui/tree/master/examples) folder for references of how to handle the `ClipRect` field.
 
 ##### [Return to Index](#index)
 
+---
 
 # Q&A: Usage
 
-### Q: Why are multiple widgets reacting when I interact with a single one? <br>Q: How can I have multiple widgets with the same label or with an empty label?
+### Q: How can I have widgets with an empty label?
+### Q: How can I have multiple widgets with the same label?
+### Q: Why are multiple widgets reacting when I interact with one?
 
 A primer on labels and the ID Stack...
 
@@ -151,22 +185,35 @@ Interactive widgets (such as calls to Button buttons) need a unique ID.
 Unique ID are used internally to track active widgets and occasionally associate state to widgets.
 Unique ID are implicitly built from the hash of multiple elements that identify the "path" to the UI element.
 
-- Unique ID are often derived from a string label:
-```c
-Button("OK");          // Label = "OK",     ID = hash of (..., "OK")
-Button("Cancel");      // Label = "Cancel", ID = hash of (..., "Cancel")
-```
-- ID are uniquely scoped within windows, tree nodes, etc. which all pushes to the ID stack. Having
-two buttons labeled "OK" in different windows or different tree locations is fine.
-We used "..." above to signify whatever was already pushed to the ID stack previously:
+- Unique ID are often derived from a string label and at minimum scoped within their host window:
 ```c
 Begin("MyWindow");
 Button("OK");          // Label = "OK",     ID = hash of ("MyWindow", "OK")
+Button("Cancel");      // Label = "Cancel", ID = hash of ("MyWindow", "Cancel")
+End();
+```
+- Other elements such as tree nodes, etc. also pushes to the ID stack:
+```c
+Begin("MyWindow");
+if (TreeNode("MyTreeNode"))
+{
+    Button("OK");      // Label = "OK",     ID = hash of ("MyWindow", "MyTreeNode", "OK")
+    TreePop();
+}
+End();
+```
+- Two items labeled "OK" in different windows or different tree locations won't collide:
+```
+Begin("MyFirstWindow");
+Button("OK");          // Label = "OK",     ID = hash of ("MyFirstWindow", "OK")
 End();
 Begin("MyOtherWindow");
 Button("OK");          // Label = "OK",     ID = hash of ("MyOtherWindow", "OK")
 End();
 ```
+
+We used "..." above to signify whatever was already pushed to the ID stack previously:
+
 - If you have a same ID twice in the same location, you'll have a conflict:
 ```c
 Button("OK");
@@ -250,12 +297,15 @@ if (TreeNode("node"))  // <-- this function call will do a PushID() for you (unl
   TreePop();
 }
 ```
-- When working with trees, ID are used to preserve the open/close state of each tree node.
+
+When working with trees, ID are used to preserve the open/close state of each tree node.
 Depending on your use cases you may want to use strings, indices or pointers as ID.
-e.g. when following a single pointer that may change over time, using a static string as ID
+- e.g. when following a single pointer that may change over time, using a static string as ID
 will preserve your node open/closed state when the targeted object change.
-e.g. when displaying a list of objects, using indices or pointers as ID will preserve the
+- e.g. when displaying a list of objects, using indices or pointers as ID will preserve the
 node open/closed state differently. See what makes more sense in your situation!
+
+##### [Return to Index](#index)
 
 ---
 
@@ -337,12 +387,16 @@ my_dx11_srv = (ID3D11ShaderResourceView*)my_void_ptr;   // cast a void* into a I
 ```
 Finally, you may call `ImGui::ShowMetricsWindow()` to explore/visualize/understand how the ImDrawList are generated.
 
+##### [Return to Index](#index)
+
 ---
 
 ### Q: How can I use my own math types instead of ImVec2/ImVec4?
 
 You can edit [imconfig.h](https://github.com/ocornut/imgui/blob/master/imconfig.h) and setup the `IM_VEC2_CLASS_EXTRA`/`IM_VEC4_CLASS_EXTRA` macros to add implicit type conversions.
 This way you'll be able to use your own types everywhere, e.g. passing `MyVector2` or `glm::vec2` to ImGui functions instead of `ImVec2`.
+
+##### [Return to Index](#index)
 
 ---
 
@@ -365,6 +419,8 @@ is that you will need to build lots of strings on the fly, and their maximum len
 One possible implementation of a helper to facilitate printf-style building of strings: https://github.com/ocornut/Str
 This is a small helper where you can instance strings with configurable local buffers length. Many game engines will
 provide similar or better string helpers.
+
+##### [Return to Index](#index)
 
 ---
 
@@ -402,13 +458,37 @@ ImGui::End();
 
 ##### [Return to Index](#index)
 
+---
 
 # Q&A: Fonts, Text
+
+### Q: How should I handle DPI in my application?
+
+The short answer is: obtain the desired DPI scale, load a suitable font resized with that scale (always round down font size to nearest integer), and scale your Style structure accordingly using `style.ScaleAllSizes()`. 
+
+Your application may want to detect DPI change and reload the font and reset style being frames.
+
+Your ui code  should avoid using hardcoded constants for size and positioning. Prefer to express values as multiple of reference values such as `ImGui::GetFontSize()` or `ImGui::GetFrameHeight()`. So e.g. instead of seeing a hardcoded height of 500 for a given item/window, you may want to use `30*ImGui::GetFontSize()` instead.
+
+Down the line Dear ImGui will provide a variety of standardized reference values to facilitate using this.
+
+Applications in the `examples/` folder are not DPI aware partly because they are unable to load a custom font from the file-system (may change that in the future).
+
+The reason DPI is not auto-magically solved in stock examples is that we don't yet have a satisfying solution for the "multi-dpi"  problem (using the `docking` branch: when multiple viewport windows are over multiple monitors using different DPI scale). The current way to handle this on the application side is:
+- Create and maintain one font atlas per active DPI scale (e.g. by iterating `platform_io.Monitors[]` before `NewFrame()`).
+- Hook `platform_io.OnChangedViewport()` to detect when a `Begin()` call makes a Dear ImGui window change monitor (and therefore DPI).
+- In the hook: swap atlas, swap style with correctly sized one, remap the current font from one atlas to the other (may need to maintain a remapping table of your fonts at variying DPI scale).
+
+This approach is relatively easy and functional but come with two issues:
+- It's not possibly to reliably size or position a window ahead of `Begin()` without knowing on which monitor it'll land.
+- Style override may be lost during the `Begin()` call crossing monitor boundaries. You may need to do some custom scaling mumbo-jumbo if you want your `OnChangedViewport()` handler to preserve style overrides.
+
+Please note that if you are not using multi-viewports with multi-monitors using different DPI scale, you can ignore all of this and use the simpler technique recommended at the top.
 
 ### Q: How can I load a different font than the default?
 Use the font atlas to load the TTF/OTF file you want:
 
-```c
+```cpp
 ImGuiIO& io = ImGui::GetIO();
 io.Fonts->AddFontFromFileTTF("myfontfile.ttf", size_in_pixels);
 io.Fonts->GetTexDataAsRGBA32() or GetTexDataAsAlpha8()
@@ -418,16 +498,18 @@ Default is ProggyClean.ttf, monospace, rendered at size 13, embedded in dear img
 
 (Tip: monospace fonts are convenient because they allow to facilitate horizontal alignment directly at the string level.)
 
-(Read the [docs/FONTS.txt](https://github.com/ocornut/imgui/blob/master/docs/FONTS.txt) file for more details about font loading.)
+(Read the [docs/FONTS.md](https://github.com/ocornut/imgui/blob/master/docs/FONTS.md) file for more details about font loading.)
 
 New programmers: remember that in C/C++ and most programming languages if you want to use a
 backslash \ within a string literal, you need to write it double backslash "\\":
 
-```c
+```cpp
 io.Fonts->AddFontFromFileTTF("MyFolder\MyFont.ttf", size);  // WRONG (you are escaping the M here!)
 io.Fonts->AddFontFromFileTTF("MyFolder\\MyFont.ttf", size;  // CORRECT
 io.Fonts->AddFontFromFileTTF("MyFolder/MyFont.ttf", size);  // ALSO CORRECT
 ```
+
+##### [Return to Index](#index)
 
 ---
 
@@ -435,15 +517,17 @@ io.Fonts->AddFontFromFileTTF("MyFolder/MyFont.ttf", size);  // ALSO CORRECT
 The most convenient and practical way is to merge an icon font such as FontAwesome inside you
 main font. Then you can refer to icons within your strings.
 You may want to see `ImFontConfig::GlyphMinAdvanceX` to make your icon look monospace to facilitate alignment.
-(Read the [docs/FONTS.txt](https://github.com/ocornut/imgui/blob/master/docs/FONTS.txt) file for more details about icons font loading.)
+(Read the [docs/FONTS.md](https://github.com/ocornut/imgui/blob/master/docs/FONTS.md) file for more details about icons font loading.)
 With some extra effort, you may use colorful icon by registering custom rectangle space inside the font atlas,
-and copying your own graphics data into it. See docs/FONTS.txt about using the AddCustomRectFontGlyph API.
+and copying your own graphics data into it. See docs/FONTS.md about using the AddCustomRectFontGlyph API.
+
+##### [Return to Index](#index)
 
 ---
 
 ### Q: How can I load multiple fonts?
 Use the font atlas to pack them into a single texture:
-(Read the [docs/FONTS.txt](https://github.com/ocornut/imgui/blob/master/docs/FONTS.txt) file and the code in ImFontAtlas for more details.)
+(Read the [docs/FONTS.md](https://github.com/ocornut/imgui/blob/master/docs/FONTS.md) file and the code in ImFontAtlas for more details.)
 
 ```cpp
 ImGuiIO& io = ImGui::GetIO();
@@ -470,6 +554,8 @@ io.Fonts->AddFontDefault();
 io.Fonts->AddFontFromFileTTF("fontawesome-webfont.ttf", 16.0f, &config, ranges); // Merge icon font
 io.Fonts->AddFontFromFileTTF("myfontfile.ttf", size_pixels, NULL, &config, io.Fonts->GetGlyphRangesJapanese()); // Merge japanese glyphs
 ```
+
+##### [Return to Index](#index)
 
 ---
 
@@ -504,6 +590,7 @@ the default implementation of io.ImeSetInputScreenPosFn() to set your Microsoft 
 
 ##### [Return to Index](#index)
 
+---
 
 # Q&A: Concerns
 
@@ -513,7 +600,11 @@ You may take a look at:
 
 - [Quotes](https://github.com/ocornut/imgui/wiki/Quotes)
 - [Software using Dear ImGui](https://github.com/ocornut/imgui/wiki/Software-using-dear-imgui)
-- [Gallery](https://github.com/ocornut/imgui/issues/2847)
+- [Gallery](https://github.com/ocornut/imgui/issues/3075)
+
+##### [Return to Index](#index)
+
+---
 
 ### Q: Can you create elaborate/serious tools with Dear ImGui?
 
@@ -523,12 +614,20 @@ Dear ImGui is very programmer centric and the immediate-mode GUI paradigm might 
 
 Dear ImGui is built to be efficient and scalable toward the needs for AAA-quality applications running all day. The IMGUI paradigm offers different opportunities for optimization that the more typical RMGUI paradigm.
 
+##### [Return to Index](#index)
+
+---
+
 ### Q: Can you reskin the look of Dear ImGui?
 
 Somehow. You can alter the look of the interface to some degree: changing colors, sizes, padding, rounding, fonts. However, as Dear ImGui is designed and optimized to create debug tools, the amount of skinning you can apply is limited. There is only so much you can stray away from the default look and feel of the interface. Dear ImGui is NOT designed to create user interface for games, although with ingenious use of the low-level API you can do it.
 
 A reasonably skinned application may look like (screenshot from [#2529](https://github.com/ocornut/imgui/issues/2529#issuecomment-524281119))
 ![minipars](https://user-images.githubusercontent.com/314805/63589441-d9794f00-c5b1-11e9-8d96-cfc1b93702f7.png)
+
+##### [Return to Index](#index)
+
+---
 
 ### Q: Why using C++ (as opposed to C)?
 
@@ -538,6 +637,7 @@ There is an auto-generated [c-api for Dear ImGui (cimgui)](https://github.com/ci
 
 ##### [Return to Index](#index)
 
+---
 
 # Q&A: Community
 
@@ -546,7 +646,7 @@ There is an auto-generated [c-api for Dear ImGui (cimgui)](https://github.com/ci
 - Individuals: you can support continued maintenance and development via PayPal donations. See [README](https://github.com/ocornut/imgui/blob/master/docs/README.md).
 - If you are experienced with Dear ImGui and C++, look at the [GitHub Issues](https://github.com/ocornut/imgui/issues), look at the [Wiki](https://github.com/ocornut/imgui/wiki), read [docs/TODO.txt](https://github.com/ocornut/imgui/blob/master/docs/TODO.txt) and see how you want to help and can help!
 - Disclose your usage of Dear ImGui via a dev blog post, a tweet, a screenshot, a mention somewhere etc.
-You may post screenshot or links in the [gallery threads](https://github.com/ocornut/imgui/issues/2847). Visuals are ideal as they inspire other programmers. Disclosing your use of dear imgui help the library grow credibility, and help other teams and programmers with taking decisions.
+You may post screenshot or links in the [gallery threads](https://github.com/ocornut/imgui/issues/3075). Visuals are ideal as they inspire other programmers. Disclosing your use of dear imgui help the library grow credibility, and help other teams and programmers with taking decisions.
 - If you have issues or if you need to hack into the library, even if you don't expect any support it is useful that you share your issues or sometimes incomplete PR.
 
 ##### [Return to Index](#index)

@@ -26,6 +26,8 @@ namespace Northwind {
 		inline uint32_t getHeight () { return m_height; }
 
 		std::string toString () const override {
+			NW_PROFILE_FUNC();
+
 			std::stringstream ss;
 			ss << "WindowResizeEvent: " << m_width << ", " << m_height;
 			return ss.str ();

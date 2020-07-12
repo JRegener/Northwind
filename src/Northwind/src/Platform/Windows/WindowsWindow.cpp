@@ -6,8 +6,8 @@
 
 namespace Northwind {
 
-	std::unique_ptr<Window> Window::Create (const WindowProps & props) {
-		return std::make_unique<WindowsWindow> (props);
+	Owned<Window> Window::Create (const WindowProps & props) {
+		return CreateOwned<WindowsWindow> (props);
 	}
 
 	WindowsWindow::WindowsWindow (const WindowProps & props) {
@@ -15,15 +15,21 @@ namespace Northwind {
 	}
 
 	WindowsWindow::~WindowsWindow () {
+		NW_PROFILE_FUNC();
+
 		shutdown ();
 	}
 
 	void WindowsWindow::OnUpdate () {
+		NW_PROFILE_FUNC();
+
 		glfwPollEvents ();
 		glfwSwapBuffers (m_window);
 	}
 
 	void WindowsWindow::setVSync (bool enabled) {
+		NW_PROFILE_FUNC();
+
 		if (enabled) {
 			glfwSwapInterval (1);
 		}
@@ -39,6 +45,8 @@ namespace Northwind {
 	}
 
 	void WindowsWindow::init (const WindowProps & props) {
+		NW_PROFILE_FUNC();
+
 		static bool GLFWInitialized = false;
 
 		if (!GLFWInitialized) {
@@ -52,6 +60,10 @@ namespace Northwind {
 			props.title.c_str(), nullptr, nullptr);
 
 		glfwMakeContextCurrent (m_window);
+
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		NW_CORE_ASSERT(status, "Failed to initialize Glad!");
+
 		glfwSetWindowUserPointer (m_window, &m_data);
 		setVSync (true);
 
@@ -147,6 +159,8 @@ namespace Northwind {
 	}
 
 	void WindowsWindow::shutdown () {
+		NW_PROFILE_FUNC();
+
 		glfwDestroyWindow (m_window);
 	}
 }

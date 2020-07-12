@@ -1,6 +1,7 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 #include "Core/Window.h"
 
 namespace Northwind {
@@ -23,6 +24,8 @@ namespace Northwind {
 		}
 		void setVSync (bool enabled) override;
 		bool isVSync () override;
+
+		void* getNativeWindow() { return m_window; }
 
 	private:
 		virtual void init (const WindowProps & props);

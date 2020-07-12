@@ -61,7 +61,8 @@ CollectFilesForLib("${NORTHWIND_SRC_DIRS}" NORTHWIND_SRC_FILES)
 add_library(Northwind STATIC ${NORTHWIND_SRC_FILES})
 
 target_include_directories(Northwind PUBLIC ${NORTHWIND_INCLUDE_DIRS})
-set_target_properties(Northwind PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(Northwind PROPERTIES LINKER_LANGUAGE CXX
+								LINK_FLAGS "/INCREMENTAL:NO")
 add_precompiled_header(Northwind nwpch.h FORCEINCLUDE SOURCE_CXX ${CMAKE_CURRENT_SOURCE_DIR}/Northwind/src/nwpch.cpp)
 
 ###############################################
@@ -71,25 +72,27 @@ add_precompiled_header(Northwind nwpch.h FORCEINCLUDE SOURCE_CXX ${CMAKE_CURRENT
 find_package(OpenGL)
 find_package(GLUT)
 
-target_link_libraries(Northwind ${OPENGL_LIBRARIES} ${OPENGL_glu_LIBRARY})
+target_link_libraries(Northwind PUBLIC ${OPENGL_LIBRARIES} ${OPENGL_glu_LIBRARY})
 
 # link glad
-target_link_libraries(Northwind glad)
+target_link_libraries(Northwind PUBLIC glad)
 
 # link glfw
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Vendor/GLFW/include)
-target_link_libraries(Northwind glfw ${GLFW_LIBRARIES})
+target_include_directories(Northwind PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Vendor/GLFW/include)
+target_link_libraries(Northwind PUBLIC glfw ${GLFW_LIBRARIES})
 ###############################################
 
 # link spdlog 
 spdlog_enable_warnings(Northwind)
-target_link_libraries(Northwind spdlog::spdlog)
+target_link_libraries(Northwind PUBLIC spdlog::spdlog)
 
 # link imgui
-target_link_libraries(Northwind imgui)
+target_include_directories(Northwind PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Vendor/imgui)
+target_include_directories(Northwind PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Vendor/imgui/examples)
+target_link_libraries(Northwind PUBLIC imgui)
 
 # link glm
-target_link_libraries(Northwind glm)
+target_link_libraries(Northwind PUBLIC glm)
 
 
 
@@ -106,12 +109,13 @@ set (SANDBOX_INCLUDE_DIRS
 CollectFilesForLib("${SANDBOX_INCLUDE_DIRS}" SANDBOX_SRC_FILES)
 
 add_executable(Sandbox ${SANDBOX_SRC_FILES})
+set_target_properties(Sandbox PROPERTIES LINKER_LANGUAGE CXX
+								LINK_FLAGS "/INCREMENTAL:NO")
+
 target_include_directories(Sandbox PUBLIC ${SANDBOX_INCLUDE_DIRS})
 target_include_directories(Sandbox PUBLIC ${NORTHWIND_INCLUDE_DIRS})
-target_include_directories(Sandbox PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Vendor/spdlog/include")
-target_include_directories(Sandbox PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Vendor/glm")
 
-target_link_libraries(Sandbox Northwind)
+target_link_libraries(Sandbox PUBLIC Northwind)
 #
 
 message (STATUS "=============== Configuration =================")

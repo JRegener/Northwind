@@ -19,8 +19,9 @@ namespace Northwind {
 		virtual void OnUpdate () {}
 		virtual void OnEvent (Event & event) {}
 
-		inline std::string getName () const { return m_name; }
+		virtual void OnImGuiRender() {}
 
+		inline std::string getName () const { return m_name; }
 	private:
 		std::string m_name;
 	};

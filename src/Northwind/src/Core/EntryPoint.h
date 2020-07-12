@@ -12,5 +12,8 @@ int main(int argc, char ** argv) {
 
 	auto app = Northwind::CreateApplication();
 
+	NW_PROFILE_BEGIN("profile.json");
+
 	app->Run();
+	NW_PROFILE_END();
 }
