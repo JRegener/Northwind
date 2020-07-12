@@ -16,9 +16,9 @@ namespace Northwind {
 		s_Instance = this;
 		m_window = Window::Create();
 		m_window->setEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
-		m_imGuiLayer = CreateOwned<ImGuiLayer>();
+		m_imGuiLayer = CreateRef<ImGuiLayer>();
 
-		//pushOverlay(m_imGuiLayer.get());
+		pushOverlay(m_imGuiLayer);
 	}
 
 	Application::~Application() {
@@ -36,11 +36,11 @@ namespace Northwind {
 				it->OnUpdate();
 			}
 
-			//m_imGuiLayer->Begin();
-			//for (auto it : m_layerStack) {
-			//	it->OnImGuiRender();
-			//}
-			//m_imGuiLayer->End();
+			m_imGuiLayer->Begin();
+			for (auto it : m_layerStack) {
+				it->OnImGuiRender();
+			}
+			m_imGuiLayer->End();
 
 			m_window->OnUpdate();
 		}

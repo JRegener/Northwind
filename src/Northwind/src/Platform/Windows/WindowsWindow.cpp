@@ -60,6 +60,10 @@ namespace Northwind {
 			props.title.c_str(), nullptr, nullptr);
 
 		glfwMakeContextCurrent (m_window);
+
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		NW_CORE_ASSERT(status, "Failed to initialize Glad!");
+
 		glfwSetWindowUserPointer (m_window, &m_data);
 		setVSync (true);
 

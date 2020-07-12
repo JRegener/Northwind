@@ -142,10 +142,20 @@ namespace Northwind {
 
 }
 
-
+#ifdef NW_PROFILE
 
 #define NW_PROFILE_BEGIN(filename)		::Northwind::MeasurementHandler::get().begin(filename)
 #define NW_PROFILE_END()				::Northwind::MeasurementHandler::get().end()
 
 #define NW_PROFILE_SCOPE(name)			::Northwind::TimeMeasurement timer(name)
 #define NW_PROFILE_FUNC()				NW_PROFILE_SCOPE(__func__)
+
+#else
+
+#define NW_PROFILE_BEGIN(filename)	
+#define NW_PROFILE_END()			
+
+#define NW_PROFILE_SCOPE(name)		
+#define NW_PROFILE_FUNC()
+
+#endif

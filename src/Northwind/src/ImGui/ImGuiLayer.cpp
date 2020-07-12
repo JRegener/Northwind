@@ -27,7 +27,8 @@ namespace Northwind {
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
 		// Setup Dear ImGui style
-		ImGui::StyleColorsLight();
+		//ImGui::StyleColorsLight();
+		ImGui::StyleColorsDark();
 		//ImGui::StyleColorsClassic();
 
 		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
