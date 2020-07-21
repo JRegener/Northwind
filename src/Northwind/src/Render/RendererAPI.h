@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "glm/glm.hpp"
 
@@ -10,6 +10,7 @@ namespace Northwind {
 		enum class API {
 			None = 0,
 			OpenGL,
+			Vulkan
 		};
 
 	public:

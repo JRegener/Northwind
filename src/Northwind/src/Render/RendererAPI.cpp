@@ -1,4 +1,4 @@
-#include "Render/RendererAPI.h"
+﻿#include "Render/RendererAPI.h"
 
 #include "Northwind.h"
 
@@ -11,9 +11,10 @@ namespace Northwind {
 	Owned<RendererAPI> RendererAPI::Create() {
 
 		switch (s_API) {
-		
-		case RendererAPI::API::None:	NW_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-		case RendererAPI::API::OpenGL:  return CreateOwned<OpenGLRendererAPI>();
+
+			case RendererAPI::API::None:	NW_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
+			case RendererAPI::API::Vulkan:	NW_CORE_ASSERT(false, "RendererAPI::Vulkan is currently not supported!"); return nullptr;
+			case RendererAPI::API::OpenGL:  return CreateOwned<OpenGLRendererAPI>();
 
 		}
 
